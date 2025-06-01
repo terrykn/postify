@@ -68,11 +68,13 @@ function Start() {
                     <TextField
                         id='album-link'
                         variant='outlined'
-                        label='Enter Album Link'
+                        label='Enter Spotify Album URL'
                         value={albumLink}
                         onChange={e => setAlbumLink(e.target.value)}
                         sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
+                        error={!!albumLink && !albumLink.includes('spotify.com/album')}
+                        helperText={!!albumLink && !albumLink.includes('spotify.com/album') ? 'Please enter a valid Spotify Album URL' : ''}
                     />
                     <Button
                         variant="contained"
@@ -104,11 +106,13 @@ function Start() {
                     <TextField
                         id='playlist-link'
                         variant='outlined'
-                        label='Enter Playlist Link'
+                        label='Enter Spotify Playlist URL'
                         value={playlistLink}
                         onChange={e => setPlaylistLink(e.target.value)}
                         sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
+                        error={!!playlistLink && !playlistLink.includes('spotify.com/playlist')}
+                        helperText={!!playlistLink && !playlistLink.includes('spotify.com/playlist') ? 'Please enter a valid Spotify Playlist URL' : ''}
                     />
                     <Button
                         variant="contained"
@@ -140,11 +144,13 @@ function Start() {
                     <TextField
                         id='song-link'
                         variant='outlined'
-                        label='Enter Song Link'
+                        label='Enter Spotify Song URL'
                         value={songLink}
                         onChange={e => setSongLink(e.target.value)}
                         sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
+                        error={!!songLink && !songLink.includes('spotify.com/track')}
+                        helperText={!!songLink && !songLink.includes('spotify.com/track') ? 'Please enter a valid Spotify Song URL' : ''}
                     />
                     <Button
                         variant="contained"
