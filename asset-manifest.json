@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/postify/static/css/main.0f80964f.css",
-    "main.js": "/postify/static/js/main.ce9f96d5.js",
+    "main.js": "/postify/static/js/main.dfe4d137.js",
     "static/media/jazz_lofi_playlist.png": "/postify/static/media/jazz_lofi_playlist.36141bb39d8d9b2b854b.png",
     "static/media/viva_song_2.png": "/postify/static/media/viva_song_2.17ad014d4724385f9829.png",
     "static/media/2010s_playlist.png": "/postify/static/media/2010s_playlist.fe2c1410bd36c99a3d43.png",
@@ -75,10 +75,10 @@
     "static/media/SpotifyMix-Thin.woff2": "/postify/static/media/SpotifyMix-Thin.1d813ab4098d0d769c46.woff2",
     "index.html": "/postify/index.html",
     "main.0f80964f.css.map": "/postify/static/css/main.0f80964f.css.map",
-    "main.ce9f96d5.js.map": "/postify/static/js/main.ce9f96d5.js.map"
+    "main.dfe4d137.js.map": "/postify/static/js/main.dfe4d137.js.map"
   },
   "entrypoints": [
     "static/css/main.0f80964f.css",
-    "static/js/main.ce9f96d5.js"
+    "static/js/main.dfe4d137.js"
   ]
 }
