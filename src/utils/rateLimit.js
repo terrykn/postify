@@ -25,7 +25,7 @@ export function canMakeApiCall() {
 export function getApiCallsLeft() {
     const now = Date.now();
     const windowMs = 60 * 60 * 1000;
-    const maxCalls = 40;
+    const maxCalls = 20;
     const key = 'api_call_timestamps';
 
     let timestamps = [];
@@ -36,7 +36,7 @@ export function getApiCallsLeft() {
     }
     timestamps = timestamps.filter(ts => now - ts < windowMs);
 
-    return Math.max(0, maxCalls - timestamps.length)/2;
+    return Math.max(0, maxCalls - timestamps.length);
 }
 
 // https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq
