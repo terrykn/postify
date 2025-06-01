@@ -81,7 +81,7 @@ function Start() {
                         color="primary"
                         onClick={() => handleAlbumClose(albumLink)}
                         sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                        disabled={!albumLink}
+                        disabled={!albumLink && !albumLink.includes('spotify.com/album')}
                     >
                         Create
                     </Button>
@@ -119,7 +119,7 @@ function Start() {
                         color="primary"
                         onClick={() => handlePlaylistClose(playlistLink)}
                         sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                        disabled={!playlistLink}
+                        disabled={!playlistLink && !playlistLink.includes('spotify.com/playlist')}
                     >
                         Create
                     </Button>
@@ -157,7 +157,7 @@ function Start() {
                         color="primary"
                         onClick={() => handleSongClose(songLink)}
                         sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                        disabled={!songLink}
+                        disabled={!songLink && !songLink.includes('spotify.com/track')}
                     >
                         Create
                     </Button>
