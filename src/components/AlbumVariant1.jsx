@@ -1,45 +1,23 @@
-import React from "react";
 import { Box, Container } from "@mui/material";
+import React from "react";
 
-const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
-  { playlistData, backgroundColor, textColor, coverType },
+const AlbumVariant1 = React.forwardRef(function AlbumVariant1(
+  { albumData, backgroundColor, spotifyCodeUrl, textColor },
   ref
 ) {
-  const trackAlbumImageUrls = playlistData
-    ? Array.from(
-        new Set(
-          playlistData.tracks?.items
-          ?.map((track) => track?.track?.album?.images?.[0]?.url)
-        )
-      )
-    : [];
-  const numImages = trackAlbumImageUrls.length;
-  const ratio = 5 / 4;
-  let rows = Math.floor(Math.sqrt(numImages / ratio));
-  let columns = Math.floor(rows * ratio);
-  let filledAlbumImages = trackAlbumImageUrls.slice(0, rows * columns);
+  const album = albumData?.albums?.[0];
+  const albumCoverImage = album?.images?.[0]?.url || "Loading...";
+  const albumName = album?.name || "Loading...";
+  const albumTracks = album?.tracks?.items || [];
+  const albumArtists = album?.artists?.map(a => a.name).join(", ") || "Loading...";
+  const displayedTracks = albumTracks.slice(0, 30);
+  const remainingCount = albumTracks.length > 30 ? albumTracks.length - 30 : 0;
 
-  while (
-    filledAlbumImages.length < rows * columns &&
-    rows > 0 &&
-    columns > 0
-  ) {
-    columns > rows ? columns-- : rows--;
-    filledAlbumImages = trackAlbumImageUrls.slice(0, rows * columns);
-  }
-
-  const playlistCoverImage = playlistData?.images?.[0]?.url || "";
-  const playlistName = playlistData?.name || "Loading...";
-  const playlistTracks = playlistData?.tracks?.items || [];
-  const playlistTracksNames = playlistTracks.map((track) => track.track.name);
-  const displayedTracks = playlistTracksNames.slice(0, 30);
-  const remainingCount = Math.max(playlistTracksNames.length - 30, 0);
-
-  const playlistTotalDuration = playlistTracks.reduce(
-    (total, track) => total + track.track.duration_ms,
+  const albumTotalDuration = albumTracks.reduce(
+    (total, track) => total + (track.duration_ms || 0),
     0
   );
-  const totalSeconds = Math.floor(playlistTotalDuration / 1000);
+  const totalSeconds = Math.floor(albumTotalDuration / 1000);
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
@@ -47,10 +25,12 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
     .toString()
     .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
-  const numTracks = playlistTracksNames.length;
   let trackColumns = 1;
-  if (numTracks > 10 && numTracks <= 20) trackColumns = 2;
-  else if (numTracks > 20) trackColumns = 3;
+  if (albumTracks.length > 6 && albumTracks.length <= 12) {
+    trackColumns = 2;
+  } else if (albumTracks.length > 12) {
+    trackColumns = 3;
+  }
 
   return (
     <div ref={ref}>
@@ -74,48 +54,15 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
             zIndex: 2,
           }}
         />
-        {coverType === "albums" ? (
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${columns}, 1fr)`,
-              gridTemplateRows: `repeat(${rows}, 1fr)`,
-              gap: 1.5,
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            {filledAlbumImages.map((imageUrl, index) => (
-              <Box
-                key={index}
-                sx={{
-                  width: "100%",
-                  paddingTop: "100%",
-                  backgroundImage: `url(${imageUrl})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  borderRadius: 1,
-                }}
-              />
-            ))}
-          </Box>
-        ) : playlistCoverImage ? (
+        {albumCoverImage ? (
           <img
-            src={playlistCoverImage}
+            src={albumCoverImage}
             style={{ width: "100%", borderRadius: 10 }}
-            alt="Playlist cover"
+            alt={albumName}
           />
         ) : (
-          <Box
-            sx={{
-              color: "white",
-              textAlign: "center",
-              mt: 4,
-              zIndex: 1,
-              position: "relative",
-            }}
-          >
-            This playlist does not have a cover.
+          <Box sx={{ color: "white", textAlign: "center", mt: 4, zIndex: 1, position: "relative" }}>
+            This album does not have a cover.
           </Box>
         )}
         <Box
@@ -137,7 +84,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
                 lineHeight: 1.1,
               }}
             >
-              {playlistName}
+              {albumName}
             </h1>
           </Box>
           <Box sx={{ mt: 6, ml: 4 }}>
@@ -153,7 +100,18 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
             </h2>
           </Box>
         </Box>
-        <Box sx={{ marginTop: 4 }}>
+        <h2
+          style={{
+            color: textColor,
+            fontFamily: "Spotify Mix, Arial, sans-serif",
+            fontWeight: "bold",
+            marginTop: 4,
+            fontSize: 32,
+          }}
+        >
+          {albumArtists}
+        </h2>
+        <Box sx={{ marginTop: 4, marginBottom: 6 }}>
           <ul
             style={{
               listStyle: "none",
@@ -162,8 +120,8 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
               columns: trackColumns,
             }}
           >
-            {displayedTracks.map((name, index) => (
-              <li key={index} style={{ marginBottom: 4 }}>
+            {displayedTracks.map((track, index) => (
+              <li key={index} style={{ marginBottom: 3 }}>
                 <p
                   style={{
                     fontSize: 24,
@@ -173,12 +131,12 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
                     fontFamily: "Spotify Mix, Arial, sans-serif",
                   }}
                 >
-                  {index + 1}. {name}
+                  {index + 1}. {track.name}
                 </p>
               </li>
             ))}
             {remainingCount > 0 && (
-              <li style={{ marginBottom: 4 }}>
+              <li style={{ marginBottom: 3 }}>
                 <p
                   style={{
                     fontSize: 24,
@@ -194,7 +152,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
             )}
           </ul>
         </Box>
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 6 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ width: 200 }}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -214,4 +172,4 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
   );
 });
 
-export default PlaylistVariant1;
+export default AlbumVariant1;

@@ -2,6 +2,15 @@ import { Container, Box, Button, Dialog, TextField } from "@mui/material";
 import Carousel from "../components/Carousel";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import album1 from '../assets/hmhas_album.png';
+import album2 from '../assets/eternal_sunshine_album.png';
+import playlist1 from '../assets/jazz_lofi_playlist.png';
+import playlist2 from '../assets/2010s_playlist.png';
+
+
+import song3 from '../assets/supernatural_song.png';
+import song4 from '../assets/viva_song.png';
+import song5 from '../assets/viva_song_2.png';
 
 function Start() {
     const [albumOpen, setAlbumOpen] = useState(false);
@@ -45,7 +54,7 @@ function Start() {
     }
 
     return (
-        <div>
+        <div style={{ position: "relative", minHeight: "100vh" }}>
             <Dialog open={albumOpen} onClose={() => handleAlbumClose(albumLink)}>
                 <Box
                     sx={{
@@ -53,7 +62,7 @@ function Start() {
                         flexDirection: 'row',
                         p: 5,
                         alignItems: 'center',
-                        fontFamily: 'Gotham, Arial, sans-serif'
+                        fontFamily: 'Spotify Mix, Arial, sans-serif',
                     }}
                 >
                     <TextField
@@ -62,21 +71,21 @@ function Start() {
                         label='Enter Album Link'
                         value={albumLink}
                         onChange={e => setAlbumLink(e.target.value)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
                     />
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={() => handleAlbumClose(albumLink)}
-                        sx={{ margin: 2, fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         disabled={!albumLink}
                     >
                         Create
                     </Button>
                     <Button
                         onClick={() => setAlbumOpen(false)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                     >
                         Cancel
                     </Button>
@@ -89,7 +98,7 @@ function Start() {
                         flexDirection: 'row',
                         p: 5,
                         alignItems: 'center',
-                        fontFamily: 'Gotham, Arial, sans-serif'
+                        fontFamily: 'Spotify Mix, Arial, sans-serif'
                     }}
                 >
                     <TextField
@@ -98,21 +107,21 @@ function Start() {
                         label='Enter Playlist Link'
                         value={playlistLink}
                         onChange={e => setPlaylistLink(e.target.value)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
                     />
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={() => handlePlaylistClose(playlistLink)}
-                        sx={{ margin: 2, fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         disabled={!playlistLink}
                     >
                         Create
                     </Button>
                     <Button
                         onClick={() => setPlaylistOpen(false)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                     >
                         Cancel
                     </Button>
@@ -125,7 +134,7 @@ function Start() {
                         flexDirection: 'row',
                         p: 5,
                         alignItems: 'center',
-                        fontFamily: 'Gotham, Arial, sans-serif'
+                        fontFamily: 'Spotify Mix, Arial, sans-serif'
                     }}
                 >
                     <TextField
@@ -134,46 +143,150 @@ function Start() {
                         label='Enter Song Link'
                         value={songLink}
                         onChange={e => setSongLink(e.target.value)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         autoFocus
                     />
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={() => handleSongClose(songLink)}
-                        sx={{ margin: 2, fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                         disabled={!songLink}
                     >
                         Create
                     </Button>
                     <Button
                         onClick={() => setSongOpen(false)}
-                        sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
                     >
                         Cancel
                     </Button>
                 </Box>
             </Dialog>
-            <Container>
-                <Box sx={{ display: "flex", flexDirection: 'column', justifyContent: 'end', height: '20vh', alignItems: 'center' }}>
-                    <h2>Create custom music posters for free!</h2>
+            <Container
+                maxWidth={false}
+                disableGutters
+                sx={{
+                    px: { xs: 1, sm: 2, md: 4 },
+                    pb: { xs: 2, md: 0 },
+                }}
+            >
+                <Box
+                    sx={{
+                        pt: { xs: 3, md: 3 }, 
+                        pb: { xs: 3, md: 3 },
+                        textAlign: 'center',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            fontFamily: 'Spotify Mix, Arial, sans-serif',
+                            fontWeight: 700,
+                            fontSize: { xs: '1.5rem', md: '1.5rem' },
+                            color: 'white',
+                            letterSpacing: 1,
+                        }}
+                    >
+                        Create a Free Custom Music Poster
+                    </Box>
                 </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, justifyContent: 'center', alignItems: 'center', height: '70vh'}}>
-                    <Box sx={{ width: { lg: 240, md: 200, sm: 170, xs: 100 } }}>
-                        <h1>Album</h1>
-                        <Button variant="contained" color="primary" onClick={() => handleAlbumOpen()}>
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: { xs: 'column', md: 'row' },
+                        gap: 1.5,
+                        
+                        
+                    }}
+                >
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            bgcolor: 'rgba(40,40,40,0.7)',
+                            borderRadius: 2,
+                            p: 3,
+                        }}
+                    >
+                        <Box sx={{ width: '100%', height: 350, mb: 2 }}>
+                            <Carousel images={[album1, album2]} height={350} />
+                        </Box>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                fontFamily: 'Spotify Mix',
+                                textTransform: 'none',
+                                boxShadow: 0,
+                                borderRadius: 8,
+                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                color: 'white',
+                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                            }}
+                            onClick={handleAlbumOpen}
+                        >
                             Create Album Poster
                         </Button>
                     </Box>
-                    <Box sx={{ width: { lg: 240, md: 200, sm: 170, xs: 100 } }}>
-                        <h1>Playlist</h1>
-                        <Button variant="contained" color="primary" onClick={() => handlePlaylistOpen()}>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            bgcolor: 'rgba(40,40,40,0.7)',
+                            borderRadius: 2,
+                            p: 3,
+                        }}
+                    >
+                        <Box sx={{ width: '100%', height: 350, mb: 2 }}>
+                            <Carousel images={[playlist1, playlist2]} height={350} />
+                        </Box>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                fontFamily: 'Spotify Mix',
+                                textTransform: 'none',
+                                boxShadow: 0,
+                                borderRadius: 8,
+                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                color: 'white',
+                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                            }}
+                            onClick={handlePlaylistOpen}
+                        >
                             Create Playlist Poster
                         </Button>
                     </Box>
-                    <Box sx={{ width: { lg: 240, md: 200, sm: 170, xs: 100 } }}>
-                        <h1>Song</h1>
-                        <Button variant="contained" color="primary" onClick={() => handleSongOpen()}>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            bgcolor: 'rgba(40,40,40,0.7)',
+                            borderRadius: 2,
+                            p: 3,
+                        }}
+                    >
+                        <Box sx={{ width: '100%', height: 350, mb: 2 }}>
+                            <Carousel images={[song3, song5, song4]} height={350} />
+                        </Box>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                fontFamily: 'Spotify Mix',
+                                textTransform: 'none',
+                                boxShadow: 0,
+                                borderRadius: 8,
+                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                color: 'white',
+                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                            }}
+                            onClick={handleSongOpen}
+                        >
                             Create Song Poster
                         </Button>
                     </Box>

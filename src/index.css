@@ -1,100 +1,235 @@
 @font-face {
-  font-family: 'PaytoneOne';
-  font-style: normal;
-  font-weight: 400;
-  src: url('./fonts/PaytoneOne-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 100;
-  src: url('./fonts/Gotham-Thin.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 100;
-  src: url('./fonts/Gotham-ThinItalic.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 200;
-  src: url('./fonts/Gotham-XLight.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 200;
-  src: url('./fonts/Gotham-XLightItalic.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 300;
-  src: url('./fonts/Gotham-Light.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 300;
-  src: url('./fonts/GothamLightItalic.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 400;
-  src: url('./fonts/GothamBook.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 400;
-  src: url('./fonts/GothamBookItalic.ttf') format('truetype'),
-       url('./fonts/Gotham-BookItalic.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 500;
-  src: url('./fonts/GothamMedium.ttf') format('truetype'),
-       url('./fonts/GothamMedium_1.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 500;
-  src: url('./fonts/GothamMediumItalic.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 700;
-  src: url('./fonts/GothamBold.ttf') format('truetype'),
-       url('./fonts/Gotham-Bold.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 700;
-  src: url('./fonts/GothamBoldItalic.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: normal;
-  font-weight: 900;
-  src: url('./fonts/Gotham-Black.otf') format('opentype');
-}
-@font-face {
-  font-family: 'Gotham';
-  font-style: italic;
-  font-weight: 900;
-  src: url('./fonts/Gotham-UltraItalic.otf') format('opentype');
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Regular.eot');
+    src: local('./fonts/Spotify Mix Regular'), local('./fonts/SpotifyMix-Regular'),
+        url('./fonts/SpotifyMix-Regular.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Regular.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Regular.woff') format('woff'),
+        url('./fonts/SpotifyMix-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-LightItalic.eot');
+    src: local('./fonts/Spotify Mix Light Italic'), local('./fonts/SpotifyMix-LightItalic'),
+        url('./fonts/SpotifyMix-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-LightItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-LightItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-ExtraboldItalic.eot');
+    src: local('./fonts/Spotify Mix Extrabold Italic'), local('./fonts/SpotifyMix-ExtraboldItalic'),
+        url('./fonts/SpotifyMix-ExtraboldItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-ExtraboldItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-ExtraboldItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-ExtraboldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Extrabold.eot');
+    src: local('./fonts/Spotify Mix Extrabold'), local('./fonts/SpotifyMix-Extrabold'),
+        url('./fonts/SpotifyMix-Extrabold.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Extrabold.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Extrabold.woff') format('woff'),
+        url('./fonts/SpotifyMix-Extrabold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Light.eot');
+    src: local('./fonts/Spotify Mix Light'), local('./fonts/SpotifyMix-Light'),
+        url('./fonts/SpotifyMix-Light.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Light.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Light.woff') format('woff'),
+        url('./fonts/SpotifyMix-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-BlackItalic.eot');
+    src: local('./fonts/Spotify Mix Black Italic'), local('./fonts/SpotifyMix-BlackItalic'),
+        url('./fonts/SpotifyMix-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-BlackItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-BlackItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-RegularItalic.eot');
+    src: local('./fonts/Spotify Mix Regular Italic'), local('./fonts/SpotifyMix-RegularItalic'),
+        url('./fonts/SpotifyMix-RegularItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-RegularItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-RegularItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-RegularItalic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-BoldItalic.eot');
+    src: local('./fonts/Spotify Mix Bold Italic'), local('./fonts/SpotifyMix-BoldItalic'),
+        url('./fonts/SpotifyMix-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-BoldItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-BoldItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-MediumItalic.eot');
+    src: local('./fonts/Spotify Mix Medium Italic'), local('./fonts/SpotifyMix-MediumItalic'),
+        url('./fonts/SpotifyMix-MediumItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-MediumItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-MediumItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Black.eot');
+    src: local('./fonts/Spotify Mix Black'), local('./fonts/SpotifyMix-Black'),
+        url('./fonts/SpotifyMix-Black.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Black.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Black.woff') format('woff'),
+        url('./fonts/SpotifyMix-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Medium.eot');
+    src: local('./fonts/Spotify Mix Medium'), local('./fonts/SpotifyMix-Medium'),
+        url('./fonts/SpotifyMix-Medium.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Medium.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Medium.woff') format('woff'),
+        url('./fonts/SpotifyMix-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Bold.eot');
+    src: local('./fonts/Spotify Mix Bold'), local('./fonts/SpotifyMix-Bold'),
+        url('./fonts/SpotifyMix-Bold.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Bold.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Bold.woff') format('woff'),
+        url('./fonts/SpotifyMix-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-ThinItalic.eot');
+    src: local('./fonts/Spotify Mix Thin Italic'), local('./fonts/SpotifyMix-ThinItalic'),
+        url('./fonts/SpotifyMix-ThinItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-ThinItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-ThinItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix Ultra';
+    src: url('./fonts/SpotifyMix-UltraItalic.eot');
+    src: local('./fonts/Spotify Mix Ultra Italic'), local('./fonts/SpotifyMix-UltraItalic'),
+        url('./fonts/SpotifyMix-UltraItalic.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-UltraItalic.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-UltraItalic.woff') format('woff'),
+        url('./fonts/SpotifyMix-UltraItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix';
+    src: url('./fonts/SpotifyMix-Thin.eot');
+    src: local('./fonts/Spotify Mix Thin'), local('./fonts/SpotifyMix-Thin'),
+        url('./fonts/SpotifyMix-Thin.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Thin.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Thin.woff') format('woff'),
+        url('./fonts/SpotifyMix-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Spotify Mix Ultra';
+    src: url('./fonts/SpotifyMix-Ultra.eot');
+    src: local('./fonts/Spotify Mix Ultra'), local('./fonts/SpotifyMix-Ultra'),
+        url('./fonts/SpotifyMix-Ultra.eot?#iefix') format('embedded-opentype'),
+        url('./fonts/SpotifyMix-Ultra.woff2') format('woff2'),
+        url('./fonts/SpotifyMix-Ultra.woff') format('woff'),
+        url('./fonts/SpotifyMix-Ultra.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+
 body {
-  margin: 20px;
-  font-family: 'Gotham', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-size: 14;
+    margin: 10px;
+    font-family: 'Spotify Mix', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background: #181818;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #232323;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #232323 #181818;
 }

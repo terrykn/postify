@@ -4,20 +4,19 @@ import { useState, useEffect, useRef } from "react";
 import * as htmlToImage from "html-to-image";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { IconButton, Dialog, TextField } from "@mui/material";
-
 import PlaylistVariant1 from "../components/PlaylistVariant1";
-import PlaylistVariant2 from "../components/PlaylistVariant2"; 
-
+import PlaylistVariant2 from "../components/PlaylistVariant2";
 import { Container, Box, Drawer, Typography, Button } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 function Playlist() {
   const location = useLocation();
   const link = location.state?.link || '';
   const playlistId = link.split('/').pop();
-  
   const navigate = useNavigate();
 
-  if(link === '') {
+  if (link === '') {
     navigate('/');
   }
 
@@ -30,40 +29,62 @@ function Playlist() {
     }
   };
 
+  function getCache(key) {
+    try {
+      const item = localStorage.getItem(key);
+      if (!item) return null;
+      const { data, expiry } = JSON.parse(item);
+      if (expiry && Date.now() > expiry) {
+        localStorage.removeItem(key);
+        return null;
+      }
+      return data;
+    } catch {
+      return null;
+    }
+  }
+  function setCache(key, data, ttlMs = 1000 * 60 * 60 * 24 * 7) { 
+    const expiry = Date.now() + ttlMs;
+    localStorage.setItem(key, JSON.stringify({ data, expiry }));
+  }
+
   const [playlistData, setPlaylistData] = useState(null);
   const [backgroundColor, setBackgroundColor] = useState("#232323");
   const [variant, setVariant] = useState("variant1");
-
-  const [coverType, setCoverType] = useState("albums");
-
+  const [coverType, setCoverType] = useState("default");
   const [reinputOpen, setReinputOpen] = useState(false);
   const [newLink, setNewLink] = useState('');
 
-  console.log(url);
-
   useEffect(() => {
-    if (playlistData !== null) return; 
-    console.log('API called');
+    if (playlistData !== null) return;
+
+    const cacheKey = `playlist_${playlistId}`;
+    const cached = getCache(cacheKey);
+    if (cached) {
+      setPlaylistData(cached);
+      return;
+    }
+
+    console.log('[API CALL] fetching playlist data for playlistId', playlistId);
     fetch(url, options)
       .then(response => response.json())
-      .then(data => setPlaylistData(data))
+      .then(data => {
+        setPlaylistData(data);
+        setCache(cacheKey, data);
+      })
       .catch(err => console.error(err));
-  }, [url, options]);
+  }, [url, options, playlistId]);
 
   const variantRef = useRef(null);
 
   const handleDownload = () => {
-    if (!variantRef.current){
-      console.log('Variant ref is null');
-      return;
-    }
+    if (!variantRef.current) return;
     htmlToImage.toPng(variantRef.current)
       .then((dataUrl) => {
         const link = document.createElement('a');
         link.download = 'playlist.png';
         link.href = dataUrl;
         link.click();
-        console.log('Download initiated');
       })
       .catch((err) => {
         console.error(err);
@@ -71,13 +92,11 @@ function Playlist() {
   };
 
   const exportSize = { width: 1080, height: 1080 };
-
   const textColor = getContrastingColor(backgroundColor || "#232323");
   const bgHex = backgroundColor.replace('#', '');
   const textHex = isColorLight(bgHex) ? 'black' : 'white';
   const spotifyCodeUrl = `https://scannables.scdn.co/uri/plain/png/${bgHex}/${textHex}/640/spotify:playlist:${playlistId}`;
 
-  // Handler for reinput dialog
   const handleReinput = () => {
     setReinputOpen(true);
     setNewLink('');
@@ -90,32 +109,58 @@ function Playlist() {
     }
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <div style={{ display: 'flex' }}>
-      {/* Permanent Drawer */}
+    <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
       <Drawer
         variant="permanent"
-        anchor="left"
+        anchor={isMobile ? "bottom" : "left"}
         slotProps={{
           paper: {
-            sx: { width: 260, boxSizing: 'border-box', p: 2 }
+            sx: isMobile
+              ? {
+                  width: '100vw',
+                  height: 340,
+                  maxHeight: '60vh',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  top: 'auto',
+                  borderTopLeftRadius: 16,
+                  borderTopRightRadius: 16,
+                  borderRight: 0,
+                  borderBottom: 0,
+                  borderLeft: 0,
+                  boxSizing: 'border-box',
+                  p: 2,
+                  position: 'fixed',
+                }
+              : {
+                  width: 260,
+                  boxSizing: 'border-box',
+                  p: 2,
+                }
           }
         }}
         open
+        sx={{
+          flexShrink: 0,
+          zIndex: isMobile ? theme.zIndex.modal + 1 : undefined,
+        }}
       >
         <Box sx={{ p: 2 }}>
-          {/* Back Button */}
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <IconButton onClick={() => navigate('/')} size="small" sx={{ color: 'black', ml: -1 }}>
+            <IconButton onClick={() => navigate('/')} size="small" sx={{ color: 'white', ml: -1 }}>
               <ArrowBackIcon />
             </IconButton>
           </Box>
           <Box sx={{ mb: 2, display: 'flex', flexDirection: 'row', gap: 2, alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="body">
-              Choose Color
+              Change Color
             </Typography>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              {/* Custom circular color picker */}
               <label style={{ position: 'relative', display: 'inline-block', cursor: 'pointer' }}>
                 <span
                   style={{
@@ -198,20 +243,35 @@ function Playlist() {
 
           {/* Reinput Link Option */}
           <Button
-            variant="outlined"
-            color="transparent"
+            variant="contained"
+            sx={{
+                fontFamily: 'Spotify Mix',
+                textTransform: 'none',
+                boxShadow: 0,
+                borderRadius: 8,
+                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                color: 'white',
+                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
+                mb: 1,
+            }}
             onClick={handleReinput}
             fullWidth
-            sx={{ mb: 1, fontFamily: 'Gotham', textTransform: 'none' }}
           >
             Change Playlist
           </Button>
           <Button
-            variant="outlined"
-            color="transparent"
+            variant="contained"
+            sx={{
+                fontFamily: 'Spotify Mix',
+                textTransform: 'none',
+                boxShadow: 0,
+                borderRadius: 8,
+                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                color: 'white',
+                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+            }}
             onClick={handleDownload}
             fullWidth
-            sx={{ fontFamily: 'Gotham', textTransform: 'none' }}
           >
             Save as PNG
           </Button>
@@ -226,7 +286,7 @@ function Playlist() {
             flexDirection: 'row',
             p: 5,
             alignItems: 'center',
-            fontFamily: 'Gotham, Arial, sans-serif'
+            fontFamily: 'Spotify Mix, Arial, sans-serif'
           }}
         >
           <TextField
@@ -235,21 +295,21 @@ function Playlist() {
             label="Enter Playlist Link"
             value={newLink}
             onChange={e => setNewLink(e.target.value)}
-            sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
             autoFocus
           />
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleReinputClose(true)}
-            sx={{ margin: 2, fontFamily: 'Gotham, Arial, sans-serif' }}
+            sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
             disabled={!newLink}
           >
             Create
           </Button>
           <Button
             onClick={() => handleReinputClose(false)}
-            sx={{ fontFamily: 'Gotham, Arial, sans-serif' }}
+            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
           >
             Cancel
           </Button>
@@ -257,34 +317,46 @@ function Playlist() {
       </Dialog>
 
       {/* Main Content */}
-      <Container sx={{ ml: '200px', overflowX: 'auto', overflowY: 'hidden', height: '90vh' }}>
-        <Box>
-          <Box>
-            <div
-              style={{
-                transform: 'scale(.28)', 
-                transformOrigin: 'top center',
-              }}
-            >
-              <div style={{ width: 1080, height: 1080 }}>
-                {variant === "variant2" ? (
-                  <PlaylistVariant2
-                    playlistData={playlistData}
-                    backgroundColor={backgroundColor}
-                    coverType={coverType}
-                  />
-                ) : (
-                  <PlaylistVariant1
-                    playlistData={playlistData}
-                    backgroundColor={backgroundColor}
-                    textColor={textColor}
-                    spotifyCodeUrl={spotifyCodeUrl}
-                    coverType={coverType}
-                  />
-                )}
-              </div>
+      <Container
+        sx={{
+          ml: isMobile ? 0 : '200px',
+          mb: isMobile ? '340px' : 0,
+          overflowX: 'auto',
+          overflowY: 'auto',
+          pt: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <div
+            style={{
+              transform: 'scale(.28)',
+              transformOrigin: 'top center',
+            }}
+          >
+            <div style={{ width: 1080, height: 1080 }}>
+              {variant === "variant2" ? (
+                <PlaylistVariant2
+                  playlistData={playlistData}
+                  backgroundColor={backgroundColor}
+                  coverType={coverType}
+                />
+              ) : (
+                <PlaylistVariant1
+                  playlistData={playlistData}
+                  backgroundColor={backgroundColor}
+                  textColor={textColor}
+                  spotifyCodeUrl={spotifyCodeUrl}
+                  coverType={coverType}
+                />
+              )}
             </div>
-          </Box>
+          </div>
         </Box>
       </Container>
 
@@ -316,29 +388,32 @@ function Playlist() {
 
 function isColorLight(hex) {
   hex = hex.replace('#', '');
-  const r = parseInt(hex.substr(0,2),16);
-  const g = parseInt(hex.substr(2,2),16);
-  const b = parseInt(hex.substr(4,2),16);
-  const luminance = (0.299*r + 0.587*g + 0.114*b)/255;
-  return luminance > 0.5;
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance;
 }
 
-function getContrastingColor(hex, amount = 150) {
+function getContrastingColor(hex, amount = 180) {
   hex = hex.replace('#', '');
   let num = parseInt(hex, 16);
   let r = (num >> 16) & 0xFF;
   let g = (num >> 8) & 0xFF;
   let b = num & 0xFF;
 
-  if (isColorLight(hex)) {
-    r = Math.max(0, r - amount);
-    g = Math.max(0, g - amount);
-    b = Math.max(0, b - amount);
-  } else {
-    r = Math.min(255, r + amount);
-    g = Math.min(255, g + amount);
-    b = Math.min(255, b + amount);
+  const luminance = isColorLight(hex);
+
+  if (luminance > 0.8) {
+    r = Math.max(0, r - 120);
+    g = Math.max(0, g - 120);
+    b = Math.max(0, b - 120);
+    return `rgb(${r},${g},${b})`;
   }
+
+  r = Math.min(255, r + amount);
+  g = Math.min(255, g + amount);
+  b = Math.min(255, b + amount);
   return `rgb(${r},${g},${b})`;
 }
 

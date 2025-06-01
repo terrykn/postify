@@ -11,7 +11,7 @@ const PlaylistVariant2 = React.forwardRef(function PlaylistVariant2({ playlistDa
                     )
                     .filter(Boolean)
             )
-          )
+        )
         : [];
 
     const numImages = trackAlbumImageUrls.length;
@@ -20,15 +20,15 @@ const PlaylistVariant2 = React.forwardRef(function PlaylistVariant2({ playlistDa
     const filledAlbumImages = trackAlbumImageUrls.slice(0, perfectSquare);
     const columns = squareSize;
     const playlistCoverImage = playlistData?.images?.[0]?.url || '';
-    
+
     return (
         <div ref={ref}>
-            <Container 
-                disableGutters 
-                style={{ 
+            <Container
+                disableGutters
+                style={{
                     position: 'relative',
-                    backgroundColor: backgroundColor || '#232323', 
-                    padding: 50 
+                    backgroundColor: backgroundColor || '#232323',
+                    padding: 80
                 }}
             >
                 {coverType === "albums" ? (
