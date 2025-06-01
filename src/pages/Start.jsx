@@ -251,9 +251,7 @@ function Start() {
                         {callsLeft} credits remaining
                         {callsLeft < 40 && (
                             <span style={{ marginLeft: 8 }}>
-                                {timeLeft === 0
-                                    ? "Credits reset!"
-                                    : `(resets in: ${formatMs(timeLeft)})`}
+                                {`(resets in: ${formatMs(timeLeft)})`}
                             </span>
                         )}
                     </Box>
