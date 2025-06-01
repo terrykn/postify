@@ -9,6 +9,9 @@ import { useTheme } from "@mui/material/styles";
 import AlbumVariant1 from "../components/AlbumVariant1";
 import AlbumVariant2 from "../components/AlbumVariant2";
 
+import { canMakeApiCall } from "../utils/rateLimit";
+import { canMakeApiCallWithThrottle } from "../utils/rateLimit";
+
 function Album() {
   const location = useLocation();
   const link = location.state?.link || '';
@@ -16,6 +19,8 @@ function Album() {
   // remove ?si= and anything after it before extracting the albumId
   const cleanLink = link.includes('?si=') ? link.split('?si=')[0] : link;
   const albumId = cleanLink.split('/').pop();
+
+  const [slowDownOpen, setSlowDownOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -67,6 +72,13 @@ function Album() {
       return;
     }
 
+    if (!canMakeApiCall()) {
+        navigate('/limit-reached');
+        return;
+    }
+    if (!canMakeApiCallWithThrottle(() => setSlowDownOpen(true))) {
+        return;
+    }
     console.log('[API CALL] fetching album data for albumId:', albumId);
     fetch(url, options)
       .then(response => response.json())
@@ -117,6 +129,32 @@ function Album() {
 
   return (
     <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+      <Dialog open={slowDownOpen} onClose={() => setSlowDownOpen(false)}>
+          <Box sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                  Please slow down!
+              </Typography>
+              <Typography variant="body2">
+                  You can only make one request every 5 seconds.
+              </Typography>
+              <Button 
+                variant="contained"
+                sx={{
+                  fontFamily: 'Spotify Mix',
+                  textTransform: 'none',
+                  boxShadow: 0,
+                  borderRadius: 8,
+                  backgroundColor: 'rgba(88, 88, 88, 0.7)',
+                  color: 'white',
+                  mt: 2,
+                  '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
+                }}
+                onClick={() => setSlowDownOpen(false)}
+              >
+                  OK
+              </Button>
+          </Box>
+      </Dialog>
       <Drawer
         variant="permanent"
         anchor={isMobile ? "bottom" : "left"}
@@ -373,7 +411,7 @@ function isColorLight(hex) {
   return luminance;
 }
 
-function getContrastingColor(hex, amount = 180) {
+function getContrastingColor(hex, amount = 170) {
   hex = hex.replace('#', '');
   let num = parseInt(hex, 16);
   let r = (num >> 16) & 0xFF;

@@ -3,6 +3,7 @@ import Playlist from "./pages/Playlist";
 import Song from "./pages/Song";
 import Start from "./pages/Start";
 import Album from "./pages/Album";
+import LimitReached from "./pages/LimitReached";
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
 const darkTheme = createTheme({
@@ -31,6 +32,7 @@ function App() {
           <Route path="/album" element={<Album />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/song" element={<Song />} />
+          <Route path="/limit-reached" element={<LimitReached />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

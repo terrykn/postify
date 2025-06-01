@@ -22,6 +22,9 @@ import { useTheme } from '@mui/material/styles';
 import SongVariant1 from "../components/SongVariant1";
 import SongVariant2 from "../components/SongVariant2";
 
+import { canMakeApiCall } from "../utils/rateLimit";
+import { canMakeApiCallWithThrottle } from "../utils/rateLimit";
+
 function Song() {
     const location = useLocation();
     const link = location.state?.link || '';
@@ -70,6 +73,8 @@ function Song() {
     const [reinputOpen, setReinputOpen] = useState(false);
     const [newLink, setNewLink] = useState('');
 
+    const [slowDownOpen, setSlowDownOpen] = useState(false);
+
     useEffect(() => {
         if (songData != null) return;
 
@@ -80,6 +85,13 @@ function Song() {
             return;
         }
 
+        if (!canMakeApiCall()) {
+            navigate('/limit-reached');
+            return;
+        }
+        if (!canMakeApiCallWithThrottle(() => setSlowDownOpen(true))) {
+            return;
+        }
         console.log('[API CALL] fetching song data for songId:', songId);
         fetch(url, options)
             .then(response => response.json())
@@ -117,21 +129,34 @@ function Song() {
                     'x-rapidapi-host': process.env.REACT_APP_RAPIDAPI_SPOTIFY_HOST
                 }
             };
+            if (!canMakeApiCall()) {
+                navigate('/limit-reached');
+                return;
+            }
+            if (!canMakeApiCallWithThrottle(() => setSlowDownOpen(true))) {
+                return;
+            }
             console.log('[API CALL] fetching lyrics for songId:', songId);
             fetch(lyricsUrl, lyricsOptions)
                 .then(response => response.json())
                 .then(response => {
-                    setLyrics(response.lyrics.lines);
-                    setCache(lyricsCacheKey, response.lyrics.lines);
+                    if (response.lyrics && Array.isArray(response.lyrics.lines)) {
+                        setLyrics(response.lyrics.lines);
+                        setCache(lyricsCacheKey, response.lyrics.lines);
+                    } else {
+                        setLyrics([{ words: "Not found" }]);
+                        setCache(lyricsCacheKey, [{ words: "Not found" }]);
+                    }
                 })
                 .catch(err => {
                     console.error(err);
+                    setLyrics([{ words: 'Not found' }])
                 });
         }
     }, [songData, songId, lyrics]);
 
     useEffect(() => {
-        if (selectedLines.length > 0 && lyrics.length > 0) {
+        if (selectedLines.length > 0 && lyrics.length > 1) {
             const startIndex = lyrics.findIndex(l => l === selectedLines[0]);
             if (startIndex !== -1) {
                 setSelectedLines(lyrics.slice(startIndex, startIndex + numLines));
@@ -193,6 +218,19 @@ function Song() {
 
     return (
         <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+            <Dialog open={slowDownOpen} onClose={() => setSlowDownOpen(false)}>
+                <Box sx={{ p: 4, textAlign: 'center' }}>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Please slow down!
+                    </Typography>
+                    <Typography variant="body2">
+                        You can only make one request every 5 seconds.
+                    </Typography>
+                    <Button onClick={() => setSlowDownOpen(false)} sx={{ mt: 2 }}>
+                        OK
+                    </Button>
+                </Box>
+            </Dialog>
             {/* Sidebar Drawer */}
             <Drawer
                 variant="permanent"
@@ -308,7 +346,7 @@ function Song() {
                                 </Typography>
                             </Box>
                             <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 1, overflow: 'auto', height: '30vh' }}>
-                                {lyrics.length > 0 ? (
+                                {lyrics.length > 1 ? (
                                     lyrics.map((line, index) => {
                                         const startIndex = selectedLines.length > 0
                                             ? lyrics.findIndex(l => l === selectedLines[0])
@@ -343,7 +381,7 @@ function Song() {
                                 ) : (
                                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                                         <Typography variant="body2" color="textSecondary" sx={{ mb: 1, fontFamily: 'Spotify Mix' }}>
-                                            Unable to fetch lyrics. Enter your own:
+                                            Unable to fetch lyrics for this song. Enter your own:
                                         </Typography>
                                         {customLyrics.map((line, idx) => (
                                             <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>

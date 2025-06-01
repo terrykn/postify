@@ -70,7 +70,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
             bottom: 0,
             height: "35%",
             pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0))",
+            background: "linear-gradient(to top, rgba(0,0,0,0.15), rgba(0,0,0,0))",
             zIndex: 2,
           }}
         />
@@ -131,9 +131,9 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
               style={{
                 color: textColor,
                 fontFamily: "Spotify Mix, Arial, sans-serif",
-                fontWeight: "bold",
+                fontWeight: 600,
                 margin: 0,
-                fontSize: 64,
+                fontSize: 62,
                 lineHeight: 1.1,
               }}
             >

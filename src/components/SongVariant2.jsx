@@ -132,7 +132,7 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
                     bottom: 0,
                     height: "35%",
                     pointerEvents: "none",
-                    background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0))",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.15), rgba(0,0,0,0))",
                     zIndex: 2,
                 }}
             />

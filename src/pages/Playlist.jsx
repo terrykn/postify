@@ -10,11 +10,16 @@ import { Container, Box, Drawer, Typography, Button } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+import { canMakeApiCall } from "../utils/rateLimit";
+import { canMakeApiCallWithThrottle } from "../utils/rateLimit";
+
 function Playlist() {
   const location = useLocation();
   const link = location.state?.link || '';
   const playlistId = link.split('/').pop();
   const navigate = useNavigate();
+
+  const [slowDownOpen, setSlowDownOpen] = useState(false);
 
   if (link === '') {
     navigate('/');
@@ -65,6 +70,13 @@ function Playlist() {
       return;
     }
 
+    if (!canMakeApiCall()) {
+        navigate('/limit-reached');
+        return;
+    }
+    if (!canMakeApiCallWithThrottle(() => setSlowDownOpen(true))) {
+        return;
+    }
     console.log('[API CALL] fetching playlist data for playlistId', playlistId);
     fetch(url, options)
       .then(response => response.json())
@@ -114,6 +126,19 @@ function Playlist() {
 
   return (
     <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row' }}>
+      <Dialog open={slowDownOpen} onClose={() => setSlowDownOpen(false)}>
+          <Box sx={{ p: 4, textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                  Please slow down!
+              </Typography>
+              <Typography variant="body2">
+                  You can only make one request every 5 seconds.
+              </Typography>
+              <Button onClick={() => setSlowDownOpen(false)} sx={{ mt: 2 }}>
+                  OK
+              </Button>
+          </Box>
+      </Dialog>
       <Drawer
         variant="permanent"
         anchor={isMobile ? "bottom" : "left"}
@@ -395,7 +420,7 @@ function isColorLight(hex) {
   return luminance;
 }
 
-function getContrastingColor(hex, amount = 180) {
+function getContrastingColor(hex, amount = 170) {
   hex = hex.replace('#', '');
   let num = parseInt(hex, 16);
   let r = (num >> 16) & 0xFF;

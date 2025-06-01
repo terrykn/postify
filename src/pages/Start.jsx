@@ -1,7 +1,8 @@
-import { Container, Box, Button, Dialog, TextField } from "@mui/material";
+import { Container, Box, Button, Dialog, TextField, Typography } from "@mui/material";
 import Carousel from "../components/Carousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import album1 from '../assets/hmhas_album.png';
 import album2 from '../assets/eternal_sunshine_album.png';
 import playlist1 from '../assets/jazz_lofi_playlist.png';
@@ -11,6 +12,46 @@ import playlist2 from '../assets/2010s_playlist.png';
 import song3 from '../assets/supernatural_song.png';
 import song4 from '../assets/viva_song.png';
 import song5 from '../assets/viva_song_2.png';
+
+import { getApiCallsLeft } from "../utils/rateLimit";
+
+function useApiResetCountdown() {
+    const [timeLeft, setTimeLeft] = useState(0);
+
+    useEffect(() => {
+        function updateCountdown() {
+            const windowMs = 60 * 60 * 1000; // 1hr
+            const key = 'api_call_timestamps';
+            let timestamps = [];
+            try {
+                timestamps = JSON.parse(localStorage.getItem(key)) || [];
+            } catch {
+                timestamps = [];
+            }
+            const now = Date.now();
+            timestamps = timestamps.filter(ts => now - ts < windowMs);
+            if (timestamps.length === 0) {
+                setTimeLeft(0);
+                return;
+            }
+            const oldest = Math.min(...timestamps);
+            const resetAt = oldest + windowMs;
+            setTimeLeft(Math.max(0, resetAt - now));
+        }
+        updateCountdown();
+        const interval = setInterval(updateCountdown, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
+    return timeLeft;
+}
+
+function formatMs(ms) {
+    const sec = Math.floor(ms / 1000) % 60;
+    const min = Math.floor(ms / 60000) % 60;
+    const hr = Math.floor(ms / 3600000);
+    return `${hr}:${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+}
 
 function Start() {
     const [albumOpen, setAlbumOpen] = useState(false);
@@ -52,6 +93,9 @@ function Start() {
             navigate('/song', { state: { link: songLink } });
         }
     }
+
+    const callsLeft = getApiCallsLeft();
+    const timeLeft = useApiResetCountdown();
 
     return (
         <div style={{ position: "relative", minHeight: "100vh" }}>
@@ -195,6 +239,24 @@ function Start() {
                     >
                         Create a Free Custom Music Poster
                     </Box>
+                    <Box
+                        sx={{
+                            fontFamily: 'Spotify Mix, Arial, sans-serif',
+                            fontWeight: 500,
+                            fontSize: { xs: '1rem', md: '1rem' },
+                            color: 'white',
+                            letterSpacing: 1,
+                        }}
+                    >
+                        {callsLeft} credits remaining
+                        {callsLeft < 40 && (
+                            <span style={{ marginLeft: 8 }}>
+                                {timeLeft === 0
+                                    ? "Credits reset!"
+                                    : `(resets in: ${formatMs(timeLeft)})`}
+                            </span>
+                        )}
+                    </Box>
                 </Box>
                 <Box
                     sx={{
@@ -235,6 +297,11 @@ function Start() {
                         >
                             Create Album Poster
                         </Button>
+                        <Box>
+                            <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
+                                1 credit
+                            </Typography>
+                        </Box>
                     </Box>
                     <Box
                         sx={{
@@ -265,6 +332,11 @@ function Start() {
                         >
                             Create Playlist Poster
                         </Button>
+                        <Box>
+                            <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
+                                1 credit
+                            </Typography>
+                        </Box>
                     </Box>
                     <Box
                         sx={{
@@ -295,6 +367,11 @@ function Start() {
                         >
                             Create Song Poster
                         </Button>
+                        <Box>
+                            <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
+                                2 credits
+                            </Typography>
+                        </Box>
                     </Box>
                 </Box>
             </Container>
