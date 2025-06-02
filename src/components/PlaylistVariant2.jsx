@@ -32,7 +32,7 @@ const PlaylistVariant2 = React.forwardRef(function PlaylistVariant2({ playlistDa
                 }}
             >
                 {coverType === "albums" ? (
-                    <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: 1.5, position: 'relative', zIndex: 1 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: 0, position: 'relative', zIndex: 1 }}>
                         {filledAlbumImages.map((imageUrl, index) => (
                             <Box
                                 key={index}
@@ -42,7 +42,7 @@ const PlaylistVariant2 = React.forwardRef(function PlaylistVariant2({ playlistDa
                                     backgroundImage: `url(${imageUrl})`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
-                                    borderRadius: 1,
+                                    borderRadius: 0,
                                 }}
                             />
                         ))}

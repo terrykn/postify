@@ -80,7 +80,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
               display: "grid",
               gridTemplateColumns: `repeat(${columns}, 1fr)`,
               gridTemplateRows: `repeat(${rows}, 1fr)`,
-              gap: 1.5,
+              gap: 0,
               position: "relative",
               zIndex: 1,
             }}
@@ -94,7 +94,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
                   backgroundImage: `url(${imageUrl})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
-                  borderRadius: 1,
+                  borderRadius: 0,
                 }}
               />
             ))}
