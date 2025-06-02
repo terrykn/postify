@@ -12,6 +12,7 @@ import { useTheme } from "@mui/material/styles";
 
 import { canMakeApiCall } from "../utils/rateLimit";
 import { canMakeApiCallWithThrottle } from "../utils/rateLimit";
+import CallsLeft from "../components/CallsLeft";
 
 function Playlist() {
   const location = useLocation();
@@ -266,7 +267,6 @@ function Playlist() {
             </select>
           </Box>
 
-          {/* Reinput Link Option */}
           <Button
             variant="contained"
             sx={{
@@ -279,11 +279,13 @@ function Playlist() {
                 '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
                 mb: 1,
             }}
-            onClick={handleReinput}
+            onClick={handleDownload}
             fullWidth
           >
-            Change Playlist
+            Save as PNG
           </Button>
+
+          {/* Reinput Link Option */}
           <Button
             variant="contained"
             sx={{
@@ -293,13 +295,18 @@ function Playlist() {
                 borderRadius: 8,
                 backgroundColor: 'rgba(50, 50, 50, 0.7)',
                 color: 'white',
-                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
             }}
-            onClick={handleDownload}
+            onClick={handleReinput}
             fullWidth
           >
-            Save as PNG
+            Change Playlist
           </Button>
+          <Box sx={{ mt: .5, display: 'flex', justifyContent: 'center'}}>
+              <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
+                  1 credit
+              </Typography>
+          </Box>
         </Box>
       </Drawer>
 
@@ -342,13 +349,13 @@ function Playlist() {
       </Dialog>
 
       {/* Main Content */}
+      <CallsLeft />
       <Container
         sx={{
           ml: isMobile ? 0 : '200px',
           mb: isMobile ? '340px' : 0,
           overflowX: 'auto',
           overflowY: 'auto',
-          pt: 2,
         }}
       >
         <Box

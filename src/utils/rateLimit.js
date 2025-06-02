@@ -1,46 +1,47 @@
-export function canMakeApiCall() {
+const CREDITS_KEY = 'api_credits';
+const RESET_KEY = 'api_credits_last_reset';
+const MAX_CREDITS = 20;
+const RESET_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+function maybeResetCredits() {
     const now = Date.now();
-    const windowMs = 60 * 60 * 1000; 
-    const maxCalls = 20;
-    const key = 'api_call_timestamps';
+    let lastReset = parseInt(localStorage.getItem(RESET_KEY), 10);
+    if (isNaN(lastReset)) lastReset = 0;
 
-    let timestamps = [];
-    try {
-        timestamps = JSON.parse(localStorage.getItem(key)) || [];
-    } catch {
-        timestamps = [];
+    if (now - lastReset >= RESET_INTERVAL_MS) {
+        localStorage.setItem(CREDITS_KEY, MAX_CREDITS);
+        localStorage.setItem(RESET_KEY, now.toString());
     }
+}
 
-    timestamps = timestamps.filter(ts => now - ts < windowMs);
+export function canMakeApiCall() {
+    maybeResetCredits();
+    let credits = parseInt(localStorage.getItem(CREDITS_KEY), 10);
+    if (isNaN(credits)) credits = MAX_CREDITS;
 
-    if (timestamps.length >= maxCalls) {
+    if (credits <= 0) {
         return false;
     }
 
-    timestamps.push(now);
-    localStorage.setItem(key, JSON.stringify(timestamps));
+    credits -= 1;
+    localStorage.setItem(CREDITS_KEY, credits);
     return true;
 }
 
 export function getApiCallsLeft() {
-    const now = Date.now();
-    const windowMs = 60 * 60 * 1000;
-    const maxCalls = 20;
-    const key = 'api_call_timestamps';
-
-    let timestamps = [];
-    try {
-        timestamps = JSON.parse(localStorage.getItem(key)) || [];
-    } catch {
-        timestamps = [];
-    }
-    timestamps = timestamps.filter(ts => now - ts < windowMs);
-
-    return Math.max(0, maxCalls - timestamps.length);
+    maybeResetCredits();
+    let credits = parseInt(localStorage.getItem(CREDITS_KEY), 10);
+    if (isNaN(credits)) credits = MAX_CREDITS;
+    return credits;
 }
 
-// https://open.spotify.com/album/1NAmidJlEaVgA3MpcPFYGq
-// https://open.spotify.com/album/5H7ixXZfsNMGbIE5OBSpcb?si=xVc4UC8LSey98r4EK-yKdw
+export function getApiResetTimeLeft() {
+    let lastReset = parseInt(localStorage.getItem(RESET_KEY), 10);
+    if (isNaN(lastReset)) lastReset = 0;
+    const now = Date.now();
+    const nextReset = lastReset + RESET_INTERVAL_MS;
+    return Math.max(0, nextReset - now);
+}
 
 export function canMakeApiCallWithThrottle(showSlowDownDialog) {
     const now = Date.now();

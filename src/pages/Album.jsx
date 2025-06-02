@@ -11,6 +11,7 @@ import AlbumVariant2 from "../components/AlbumVariant2";
 
 import { canMakeApiCall } from "../utils/rateLimit";
 import { canMakeApiCallWithThrottle } from "../utils/rateLimit";
+import CallsLeft from "../components/CallsLeft";
 
 function Album() {
   const location = useLocation();
@@ -260,7 +261,23 @@ function Album() {
             </select>
           </Box>
 
-
+          <Button
+            variant="contained"
+            sx={{
+                fontFamily: 'Spotify Mix',
+                textTransform: 'none',
+                boxShadow: 0,
+                borderRadius: 8,
+                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                color: 'white',
+                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
+                mb: 1
+            }}
+            onClick={handleDownload}
+            fullWidth
+          >
+            Save as PNG
+          </Button>
           {/* Reinput Link Option */}
           <Button
             variant="contained"
@@ -272,29 +289,17 @@ function Album() {
                 backgroundColor: 'rgba(50, 50, 50, 0.7)',
                 color: 'white',
                 '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' },
-                mb: 1,
             }}
             onClick={handleReinput}
             fullWidth
           >
             Change Album
           </Button>
-          <Button
-            variant="contained"
-            sx={{
-                fontFamily: 'Spotify Mix',
-                textTransform: 'none',
-                boxShadow: 0,
-                borderRadius: 8,
-                backgroundColor: 'rgba(50, 50, 50, 0.7)',
-                color: 'white',
-                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
-            }}
-            onClick={handleDownload}
-            fullWidth
-          >
-            Save as PNG
-          </Button>
+          <Box sx={{ mt: .5, display: 'flex', justifyContent: 'center'}}>
+              <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
+                  1 credit
+              </Typography>
+          </Box>
         </Box>
       </Drawer>
 
@@ -343,9 +348,9 @@ function Album() {
           mb: isMobile ? '340px' : 0,
           overflowX: 'auto',
           overflowY: 'auto',
-          pt: 2,
         }}
       >
+        <CallsLeft />
         <Box
           sx={{
             display: 'flex',

@@ -12,46 +12,7 @@ import playlist2 from '../assets/2010s_playlist.png';
 import song3 from '../assets/supernatural_song.png';
 import song4 from '../assets/viva_song.png';
 import song5 from '../assets/viva_song_2.png';
-
-import { getApiCallsLeft } from "../utils/rateLimit";
-
-function useApiResetCountdown() {
-    const [timeLeft, setTimeLeft] = useState(0);
-
-    useEffect(() => {
-        function updateCountdown() {
-            const windowMs = 60 * 60 * 1000; // 1hr
-            const key = 'api_call_timestamps';
-            let timestamps = [];
-            try {
-                timestamps = JSON.parse(localStorage.getItem(key)) || [];
-            } catch {
-                timestamps = [];
-            }
-            const now = Date.now();
-            timestamps = timestamps.filter(ts => now - ts < windowMs);
-            if (timestamps.length === 0) {
-                setTimeLeft(0);
-                return;
-            }
-            const oldest = Math.min(...timestamps);
-            const resetAt = oldest + windowMs;
-            setTimeLeft(Math.max(0, resetAt - now));
-        }
-        updateCountdown();
-        const interval = setInterval(updateCountdown, 1000);
-        return () => clearInterval(interval);
-    }, []);
-
-    return timeLeft;
-}
-
-function formatMs(ms) {
-    const sec = Math.floor(ms / 1000) % 60;
-    const min = Math.floor(ms / 60000) % 60;
-    const hr = Math.floor(ms / 3600000);
-    return `${hr}:${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
-}
+import CallsLeft from "../components/CallsLeft";
 
 function Start() {
     const [albumOpen, setAlbumOpen] = useState(false);
@@ -93,9 +54,6 @@ function Start() {
             navigate('/song', { state: { link: songLink } });
         }
     }
-
-    const callsLeft = getApiCallsLeft();
-    const timeLeft = useApiResetCountdown();
 
     return (
         <div style={{ position: "relative", minHeight: "100vh" }}>
@@ -217,8 +175,8 @@ function Start() {
                 maxWidth={false}
                 disableGutters
                 sx={{
-                    px: { xs: 1, sm: 2, md: 4 },
-                    pb: { xs: 2, md: 0 },
+                    px: { xs: 2, sm: 2, md: 4 },
+                    pb: { xs: 4, md: 4 },
                 }}
             >
                 <Box
@@ -239,6 +197,7 @@ function Start() {
                     >
                         Create a Free Custom Music Poster
                     </Box>
+                    <CallsLeft />
                     <Box
                         sx={{
                             fontFamily: 'Spotify Mix, Arial, sans-serif',
@@ -248,12 +207,6 @@ function Start() {
                             letterSpacing: 1,
                         }}
                     >
-                        {callsLeft} credits remaining
-                        {callsLeft < 40 && (
-                            <span style={{ marginLeft: 8 }}>
-                                {`(resets in: ${formatMs(timeLeft)})`}
-                            </span>
-                        )}
                     </Box>
                 </Box>
                 <Box
@@ -262,8 +215,6 @@ function Start() {
                         display: 'flex',
                         flexDirection: { xs: 'column', md: 'row' },
                         gap: 1.5,
-                        
-                        
                     }}
                 >
                     <Box
