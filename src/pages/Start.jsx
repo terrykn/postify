@@ -189,10 +189,9 @@ function Start() {
                     <Box
                         sx={{
                             fontFamily: 'Spotify Mix, Arial, sans-serif',
-                            fontWeight: 700,
+                            fontWeight: 600,
                             fontSize: { xs: '1.5rem', md: '1.5rem' },
                             color: 'white',
-                            letterSpacing: 1,
                         }}
                     >
                         Create a Free Custom Music Poster
