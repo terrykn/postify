@@ -582,7 +582,6 @@ function Song() {
             </Drawer>
 
             {/* Main Content */}
-            <CallsLeft />
             <Container
                 sx={{
                     ml: isMobile ? 0 : '260px',
@@ -591,6 +590,7 @@ function Song() {
                     overflowY: 'auto',
                 }}
             >
+                <CallsLeft />
                 <Box
                     sx={{
                         display: 'flex',

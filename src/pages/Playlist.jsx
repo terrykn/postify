@@ -349,7 +349,6 @@ function Playlist() {
       </Dialog>
 
       {/* Main Content */}
-      <CallsLeft />
       <Container
         sx={{
           ml: isMobile ? 0 : '200px',
@@ -358,6 +357,7 @@ function Playlist() {
           overflowY: 'auto',
         }}
       >
+        <CallsLeft />
         <Box
           sx={{
             display: 'flex',
