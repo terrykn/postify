@@ -162,8 +162,8 @@ function Album() {
             sx: isMobile
               ? {
                   width: '100vw',
-                  height: 340,
-                  maxHeight: '60vh',
+                  height: 'auto',
+                  maxHeight: '40vh',
                   left: 0,
                   right: 0,
                   bottom: 0,

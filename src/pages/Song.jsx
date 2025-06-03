@@ -227,8 +227,8 @@ function Song() {
                         sx: isMobile
                             ? {
                                 width: '100vw',
-                                height: 340,
-                                maxHeight: '60vh',
+                                height: 'auto',
+                                maxHeight: '40vh',
                                 left: 0,
                                 right: 0,
                                 bottom: 0,
@@ -332,7 +332,7 @@ function Song() {
                                     Click to Choose Lyrics
                                 </Typography>
                             </Box>
-                            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 1, overflow: 'auto', height: '30vh' }}>
+                            <Box sx={{ mb: 2, display: 'flex', flexDirection: 'column', gap: 1, overflow: 'auto', height: 100, backgroundColor: '#232323', p: 1, borderRadius: 3 }}>
                                 {lyrics.length > 1 ? (
                                     lyrics.map((line, index) => {
                                         const startIndex = selectedLines.length > 0

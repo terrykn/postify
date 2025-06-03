@@ -5,14 +5,15 @@ import { useNavigate } from "react-router-dom";
 
 import album1 from '../assets/hmhas_album.png';
 import album2 from '../assets/eternal_sunshine_album.png';
+import album3 from '../assets/starboy_album.png';
 import playlist1 from '../assets/jazz_lofi_playlist.png';
 import playlist2 from '../assets/2010s_playlist.png';
-
-
 import song3 from '../assets/supernatural_song.png';
 import song4 from '../assets/viva_song.png';
 import song5 from '../assets/viva_song_2.png';
+
 import CallsLeft from "../components/CallsLeft";
+import { canMakeApiCall } from "../utils/rateLimit";
 
 function Start() {
     const [albumOpen, setAlbumOpen] = useState(false);
@@ -25,6 +26,10 @@ function Start() {
     const navigate = useNavigate();
 
     const handleAlbumOpen = () => {
+        if (!canMakeApiCall()) {
+            navigate('/limit-reached');
+            return;
+        }
         setAlbumOpen(true);
     }
 
@@ -36,6 +41,10 @@ function Start() {
     }
 
     const handlePlaylistOpen = () => {
+        if (!canMakeApiCall()) {
+            navigate('/limit-reached');
+            return;
+        }
         setPlaylistOpen(true);
     }
     const handlePlaylistClose = (link) => {
@@ -46,6 +55,10 @@ function Start() {
     }
 
     const handleSongOpen = () => {
+        if (!canMakeApiCall()) {
+            navigate('/limit-reached');
+            return;
+        }
         setSongOpen(true);
     }
     const handleSongClose = () => {
@@ -228,7 +241,7 @@ function Start() {
                         }}
                     >
                         <Box sx={{ width: '100%', height: 350, mb: 2 }}>
-                            <Carousel images={[album1, album2]} height={350} />
+                            <Carousel images={[album3, album1, album2]} height={350} />
                         </Box>
                         <Button
                             variant="contained"

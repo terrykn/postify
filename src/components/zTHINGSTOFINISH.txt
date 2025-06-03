@@ -1,3 +1,5 @@
-rendering of icons upon timestamp change in song variant 2
+add progress bar for handledownload
 
-export functionality for playlist error for covertype default [playlist lying in empty room]
+fix issue of export not rendering the first download on mobile
+
+fix export rendering on mobile a multi-line song in album song list display has overlap issues (Ruby album)
