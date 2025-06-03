@@ -6,7 +6,7 @@ const AlbumVariant2 = React.forwardRef(function AlbumVariant2({ albumData, backg
     const albumCoverImage = album?.images?.[0]?.url || '';
 
     return (
-        <div ref={ref}>
+        <div ref={ref} style={{ width: 1080, height: 'auto' }}>
             <Container
                 disableGutters
                 style={{

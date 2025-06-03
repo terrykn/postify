@@ -63,7 +63,7 @@ function Song() {
             return null;
         }
     }
-    function setCache(key, data, ttlMs = 1000 * 60 * 60 * 24 * 7) { 
+    function setCache(key, data, ttlMs = 1000 * 60 * 60 * 24 * 7) {
         const expiry = Date.now() + ttlMs;
         localStorage.setItem(key, JSON.stringify({ data, expiry }));
     }
@@ -134,9 +134,7 @@ function Song() {
                 navigate('/limit-reached');
                 return;
             }
-            if (!canMakeApiCallWithThrottle(() => setSlowDownOpen(true))) {
-                return;
-            }
+
             console.log('[API CALL] fetching lyrics for songId:', songId);
             fetch(lyricsUrl, lyricsOptions)
                 .then(response => response.json())
@@ -166,21 +164,9 @@ function Song() {
     }, [numLines, lyrics]);
 
     const variantRef = useRef(null);
-    const exportRef = useRef(null);
 
     const handleDownload = () => {
-        if (exportRef.current) {
-            htmlToImage.toPng(exportRef.current)
-                .then((dataUrl) => {
-                    const link = document.createElement('a');
-                    link.download = 'song.png';
-                    link.href = dataUrl;
-                    link.click();
-                })
-                .catch((error) => {
-                    console.error('Error downloading image:', error);
-                });
-        } else if (variantRef.current) {
+        if (variantRef.current) {
             htmlToImage.toPng(variantRef.current)
                 .then((dataUrl) => {
                     const link = document.createElement('a');
@@ -536,7 +522,7 @@ function Song() {
                     >
                         Change Song
                     </Button>
-                    <Box sx={{ mt: .5, display: 'flex', justifyContent: 'center'}}>
+                    <Box sx={{ mt: .5, display: 'flex', justifyContent: 'center' }}>
                         <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
                             2 credits
                         </Typography>
@@ -604,61 +590,30 @@ function Song() {
                             transformOrigin: 'top center',
                         }}
                     >
-                        <div style={{ width: 1080, height: 1080 }}>
-                            {variant === "variant1" && songData ? (
-                                <SongVariant1
-                                    ref={variantRef}
-                                    songData={songData}
-                                    backgroundColor={backgroundColor}
-                                    textColor={textColor}
-                                    selectedLyrics={
-                                        usingCustomLyrics
-                                            ? customLyrics.filter(line => line.trim()).map(words => ({ words }))
-                                            : selectedLines
-                                    }
-                                />
-                            ) : variant === "variant2" && songData ? (
-                                <SongVariant2
-                                    ref={variantRef}
-                                    songData={songData}
-                                    backgroundColor={backgroundColor}
-                                    textColor={textColor}
-                                    selectedTimestamp={selectedTimestamp}
-                                />
-                            ) : null}
-                        </div>
+                        {variant === "variant1" && songData ? (
+                            <SongVariant1
+                                ref={variantRef}
+                                songData={songData}
+                                backgroundColor={backgroundColor}
+                                textColor={textColor}
+                                selectedLyrics={
+                                    usingCustomLyrics
+                                        ? customLyrics.filter(line => line.trim()).map(words => ({ words }))
+                                        : selectedLines
+                                }
+                            />
+                        ) : variant === "variant2" && songData ? (
+                            <SongVariant2
+                                ref={variantRef}
+                                songData={songData}
+                                backgroundColor={backgroundColor}
+                                textColor={textColor}
+                                selectedTimestamp={selectedTimestamp}
+                            />
+                        ) : null}
                     </div>
                 </Box>
             </Container>
-
-            {/* Hidden export version */}
-            <div style={{ position: 'absolute', left: '-9999px', width: exportSize.width, height: exportSize.height, pointerEvents: 'none' }}>
-                {variant === "variant1" && songData ? (
-                    <SongVariant1
-                        ref={exportRef}
-                        songData={songData}
-                        backgroundColor={backgroundColor}
-                        textColor={textColor}
-                        selectedLyrics={
-                            usingCustomLyrics
-                                ? customLyrics.filter(line => line.trim()).map(words => ({ words }))
-                                : selectedLines
-                        }
-                        exportSize={exportSize}
-                        forceFixedSize
-                    />
-                ) : variant === "variant2" && songData ? (
-                    <SongVariant2
-                        ref={exportRef}
-                        songData={songData}
-                        backgroundColor={backgroundColor}
-                        textColor={textColor}
-                        selectedTimestamp={selectedTimestamp}
-                        exportSize={exportSize}
-                        forceFixedSize
-                    />
-                ) : null}
-            </div>
         </div>
     );
 }

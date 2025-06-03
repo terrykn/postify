@@ -2,6 +2,14 @@ import React from "react";
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import { Box, Container, Typography, Slider } from "@mui/material";
 
+import ShuffleIcon from "../assets/shuffle_icon.png";
+import RewindIcon from "../assets/rewind_icon.png";
+import ForwardIcon from "../assets/forward_icon.png";
+import LoopIcon from "../assets/loop_icon.png";
+import PCIcon from "../assets/pc_icon.png";
+import PlaylistIcon from "../assets/playlist_icon.png";
+
+
 const SongVariant2 = React.forwardRef(function SongVariant2(
     { songData, backgroundColor, textColor, selectedTimestamp },
     ref
@@ -15,14 +23,12 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
 
     const iconColor = (backgroundColor || "#232323").replace('#', '').toUpperCase();
     return (
+        <div ref={ref} style={{ width: 1080, height: 'auto' }}>
         <Container
-            ref={ref}
             disableGutters
             style={{
                 backgroundColor,
                 color: textColor,
-                width: 1080,
-                height: 'auto',
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "left",
@@ -70,7 +76,8 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
                         },
                         '& .MuiSlider-thumb': {
                             color: '#fff',
-
+                            width: 26,
+                            height: 26,
                         },
                     }}
                 />
@@ -84,10 +91,9 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                <img src={'https://img.icons8.com/?size=80&id=91479&format=png&color=F3F3F3'} alt="prev" />
-                <img src={'https://img.icons8.com/?size=80&id=kXxOhHbYAXYl&format=png&color=FFFFFF'} alt="rewind" />
+                <img src={ShuffleIcon} alt="shuffle" />
+                <img src={RewindIcon} alt="rewind" />
                 <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', ml: 4, mr: 4 }}>
-                    {/* Large white circle as play button background */}
                     <Box
                         sx={{
                             position: 'absolute',
@@ -116,12 +122,12 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
                         style={{ position: 'relative', zIndex: 2 }}
                     />
                 </Box>
-                <img src={'https://img.icons8.com/?size=80&id=4n9XxaO80mrS&format=png&color=FFFFFF'} alt="forward" />
-                <img src={'https://img.icons8.com/?size=80&id=91481&format=png&color=F3F3F3'} alt="next" />
+                <img src={ForwardIcon} alt="forward" />
+                <img src={LoopIcon} alt="loop" />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
-                <img src={'https://img.icons8.com/?size=70&id=85944&format=png&color=F3F3F3'} />
-                <img src={'https://img.icons8.com/?size=70&id=113920&format=png&color=F3F3F3'} />
+                <img src={PCIcon} />
+                <img src={PlaylistIcon} />
             </Box>
 
             <Box
@@ -137,6 +143,7 @@ const SongVariant2 = React.forwardRef(function SongVariant2(
                 }}
             />
         </Container>
+        </div>
     )
 })
 

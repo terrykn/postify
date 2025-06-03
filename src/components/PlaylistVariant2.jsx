@@ -17,12 +17,12 @@ const PlaylistVariant2 = React.forwardRef(function PlaylistVariant2({ playlistDa
     const numImages = trackAlbumImageUrls.length;
     const squareSize = Math.floor(Math.sqrt(numImages));
     const perfectSquare = squareSize * squareSize;
-    const filledAlbumImages = trackAlbumImageUrls.slice(0, perfectSquare);
-    const columns = squareSize;
+    const filledAlbumImages = trackAlbumImageUrls.slice(0, Math.min(perfectSquare, 16));
+    const columns = Math.min(squareSize, 4);
     const playlistCoverImage = playlistData?.images?.[0]?.url || '';
 
     return (
-        <div ref={ref}>
+        <div ref={ref} style={{ width: 1080, height: 'auto' }}>
             <Container
                 disableGutters
                 style={{

@@ -1,0 +1,3 @@
+rendering of icons upon timestamp change in song variant 2
+
+export functionality for playlist error for covertype default [playlist lying in empty room]

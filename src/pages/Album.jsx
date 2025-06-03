@@ -106,8 +106,6 @@ function Album() {
       });
   };
 
-  const exportSize = { width: 1080, height: 1080 };
-
   const textColor = getContrastingColor(backgroundColor || "#232323");
   const bgHex = backgroundColor.replace('#', '');
   const textHex = isColorLight(bgHex) ? 'black' : 'white';
@@ -367,11 +365,13 @@ function Album() {
             <div style={{ width: 1080, height: 1080 }}>
               {variant === "variant2" ? (
                 <AlbumVariant2
+                  ref={variantRef}
                   albumData={albumData}
                   backgroundColor={backgroundColor}
                 />
               ) : (
                 <AlbumVariant1
+                  ref={variantRef}
                   albumData={albumData}
                   backgroundColor={backgroundColor}
                   textColor={textColor}
@@ -382,27 +382,6 @@ function Album() {
           </div>
         </Box>
       </Container>
-
-      {/* Hidden export version */}
-      <div style={{ position: 'absolute', left: '-9999px', width: exportSize.width, height: exportSize.height, pointerEvents: 'none' }}>
-        {variant === "variant2" ? (
-          <AlbumVariant2
-            ref={variantRef}
-            albumData={albumData}
-            backgroundColor={backgroundColor}
-          />
-        ) : (
-          <AlbumVariant1
-            ref={variantRef}
-            albumData={albumData}
-            exportSize={exportSize}
-            forceFixedSize
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            spotifyCodeUrl={spotifyCodeUrl}
-          />
-        )}
-      </div>
     </div>
   );
 }

@@ -104,7 +104,6 @@ function Playlist() {
       });
   };
 
-  const exportSize = { width: 1080, height: 1080 };
   const textColor = getContrastingColor(backgroundColor || "#232323");
   const bgHex = backgroundColor.replace('#', '');
   const textHex = isColorLight(bgHex) ? 'black' : 'white';
@@ -371,15 +370,17 @@ function Playlist() {
               transformOrigin: 'top center',
             }}
           >
-            <div style={{ width: 1080, height: 1080 }}>
               {variant === "variant2" ? (
                 <PlaylistVariant2
+                  ref={variantRef}
                   playlistData={playlistData}
                   backgroundColor={backgroundColor}
                   coverType={coverType}
                 />
               ) : (
                 <PlaylistVariant1
+                  ref={variantRef}
+                  forceFixedSize
                   playlistData={playlistData}
                   backgroundColor={backgroundColor}
                   textColor={textColor}
@@ -387,33 +388,9 @@ function Playlist() {
                   coverType={coverType}
                 />
               )}
-            </div>
           </div>
         </Box>
       </Container>
-
-      {/* Hidden export version */}
-      <div style={{ position: 'absolute', left: '-9999px', width: exportSize.width, height: exportSize.height, pointerEvents: 'none' }}>
-        {variant === "variant2" ? (
-          <PlaylistVariant2
-            ref={variantRef}
-            playlistData={playlistData}
-            backgroundColor={backgroundColor}
-            coverType={coverType}
-          />
-        ) : (
-          <PlaylistVariant1
-            ref={variantRef}
-            playlistData={playlistData}
-            exportSize={exportSize}
-            forceFixedSize
-            backgroundColor={backgroundColor}
-            textColor={textColor}
-            spotifyCodeUrl={spotifyCodeUrl}
-            coverType={coverType}
-          />
-        )}
-      </div>
     </div>
   );
 }

@@ -17,7 +17,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
   const ratio = 5 / 4;
   let rows = Math.floor(Math.sqrt(numImages / ratio));
   let columns = Math.floor(rows * ratio);
-  let filledAlbumImages = trackAlbumImageUrls.slice(0, rows * columns);
+  let filledAlbumImages = trackAlbumImageUrls.slice(0, Math.min(rows * columns, 12));
 
   while (
     filledAlbumImages.length < rows * columns &&
@@ -25,7 +25,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
     columns > 0
   ) {
     columns > rows ? columns-- : rows--;
-    filledAlbumImages = trackAlbumImageUrls.slice(0, rows * columns);
+    filledAlbumImages = trackAlbumImageUrls.slice(0, Math.min(rows * columns, 12));
   }
 
   const playlistCoverImage = playlistData?.images?.[0]?.url || "";
@@ -53,7 +53,7 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
   else if (numTracks > 20) trackColumns = 3;
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{ width: 1080, height: 'auto' }}>
       <Container
         disableGutters
         style={{
@@ -99,7 +99,8 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
               />
             ))}
           </Box>
-        ) : playlistCoverImage ? (
+        // error mosaic.scdn.co does not support cors
+        ) : playlistCoverImage && !playlistCoverImage.includes("mosaic.scdn.co") ? (
           <img
             src={playlistCoverImage}
             style={{ width: "100%", borderRadius: 10 }}
@@ -108,14 +109,19 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
         ) : (
           <Box
             sx={{
-              color: "white",
+              color: textColor,
               textAlign: "center",
               mt: 4,
               zIndex: 1,
               position: "relative",
             }}
           >
-            This playlist does not have a cover.
+            <h1>
+              Playlist does not have default cover
+            </h1>
+            <h1>
+              Try changing Cover Type to 'Albums'
+            </h1>
           </Box>
         )}
         <Box

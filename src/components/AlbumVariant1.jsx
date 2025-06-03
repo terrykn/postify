@@ -33,7 +33,7 @@ const AlbumVariant1 = React.forwardRef(function AlbumVariant1(
   }
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{ width: 1080, height: 'auto' }}>
       <Container
         disableGutters
         style={{
