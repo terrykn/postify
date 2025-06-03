@@ -277,6 +277,7 @@ function Album() {
             Save as PNG
           </Button>
           {/* Reinput Link Option */}
+          {/*
           <Button
             variant="contained"
             sx={{
@@ -293,11 +294,13 @@ function Album() {
           >
             Change Album
           </Button>
+          
           <Box sx={{ mt: .5, display: 'flex', justifyContent: 'center'}}>
               <Typography variant="caption" sx={{ color: 'rgba(230,230,230)' }}>
                   1 credit
               </Typography>
           </Box>
+        */}
         </Box>
       </Drawer>
 

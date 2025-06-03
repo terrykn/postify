@@ -111,17 +111,34 @@ const PlaylistVariant1 = React.forwardRef(function PlaylistVariant1(
             sx={{
               color: textColor,
               textAlign: "center",
-              mt: 4,
               zIndex: 1,
               position: "relative",
             }}
           >
-            <h1>
-              Playlist does not have default cover
-            </h1>
-            <h1>
-              Try changing Cover Type to 'Albums'
-            </h1>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${columns}, 1fr)`,
+                gridTemplateRows: `repeat(${rows}, 1fr)`,
+                gap: 0,
+                position: "relative",
+                zIndex: 1,
+              }}
+            >
+              {filledAlbumImages.map((imageUrl, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: "100%",
+                    paddingTop: "100%",
+                    backgroundImage: `url(${imageUrl})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    borderRadius: 0,
+                  }}
+                />
+              ))}
+            </Box>
           </Box>
         )}
         <Box

@@ -506,6 +506,7 @@ function Song() {
                     </Button>
 
                     {/* Reinput Link Option */}
+                    {/*
                     <Button
                         variant="contained"
                         sx={{
@@ -527,6 +528,7 @@ function Song() {
                             2 credits
                         </Typography>
                     </Box>
+                    */}
                     {/* Reinput Dialog */}
                     <Dialog open={reinputOpen} onClose={() => handleReinputClose(false)}>
                         <Box
