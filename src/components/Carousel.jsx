@@ -36,13 +36,14 @@ function Carousel({ images, height = 200 }) {
                 <img 
                     src={images[currentIndex]}
                     style={{
-                        width: '100%',
+                        width: 'auto',
                         height: '100%',
                         maxWidth: '100%',
                         maxHeight: '100%',
                         objectFit: 'contain',
                         display: 'block',
                         margin: '0 auto',
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
                     }}
                     alt=""
                 />
