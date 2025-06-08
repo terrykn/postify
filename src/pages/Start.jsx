@@ -13,7 +13,7 @@ import song4 from '../assets/viva_song.png';
 import song5 from '../assets/viva_song_2.png';
 
 import CallsLeft from "../components/CallsLeft";
-import { canMakeApiCall } from "../utils/rateLimit";
+import { getApiCallsLeft } from "../utils/rateLimit";
 
 function Start() {
     const [albumOpen, setAlbumOpen] = useState(false);
@@ -26,7 +26,7 @@ function Start() {
     const navigate = useNavigate();
 
     const handleAlbumOpen = () => {
-        if (!canMakeApiCall()) {
+        if (getApiCallsLeft() <= 0) {
             navigate('/limit-reached');
             return;
         }
@@ -41,7 +41,7 @@ function Start() {
     }
 
     const handlePlaylistOpen = () => {
-        if (!canMakeApiCall()) {
+        if (getApiCallsLeft() <= 0) {
             navigate('/limit-reached');
             return;
         }
@@ -55,7 +55,7 @@ function Start() {
     }
 
     const handleSongOpen = () => {
-        if (!canMakeApiCall()) {
+        if (getApiCallsLeft() <= 0) {
             navigate('/limit-reached');
             return;
         }
@@ -74,10 +74,11 @@ function Start() {
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         p: 5,
                         alignItems: 'center',
                         fontFamily: 'Spotify Mix, Arial, sans-serif',
+                        gap: 2,
                     }}
                 >
                     <TextField
@@ -91,31 +92,34 @@ function Start() {
                         error={!!albumLink && !albumLink.includes('spotify.com/album')}
                         helperText={!!albumLink && !albumLink.includes('spotify.com/album') ? 'Please enter a valid Spotify Album URL' : ''}
                     />
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handleAlbumClose(albumLink)}
-                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0 }}
-                        disabled={!!albumLink && !albumLink.includes('spotify.com/album')}
-                    >
-                        Create
-                    </Button>
-                    <Button
-                        onClick={() => setAlbumOpen(false)}
-                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                    >
-                        Cancel
-                    </Button>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleAlbumClose(albumLink)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5, '&:hover': { boxShadow: 0 } }}
+                            disabled={!!albumLink && !albumLink.includes('spotify.com/album')}
+                        >
+                            Create
+                        </Button>
+                        <Button
+                            onClick={() => setAlbumOpen(false)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5 }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Box>
             </Dialog>
             <Dialog open={playlistOpen} onClose={() => handlePlaylistClose(playlistLink)}>
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         p: 5,
                         alignItems: 'center',
-                        fontFamily: 'Spotify Mix, Arial, sans-serif'
+                        fontFamily: 'Spotify Mix, Arial, sans-serif',
+                        gap: 2,
                     }}
                 >
                     <TextField
@@ -129,31 +133,34 @@ function Start() {
                         error={!!playlistLink && !playlistLink.includes('spotify.com/playlist')}
                         helperText={!!playlistLink && !playlistLink.includes('spotify.com/playlist') ? 'Please enter a valid Spotify Playlist URL' : ''}
                     />
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handlePlaylistClose(playlistLink)}
-                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                        disabled={!!playlistLink && !playlistLink.includes('spotify.com/playlist')}
-                    >
-                        Create
-                    </Button>
-                    <Button
-                        onClick={() => setPlaylistOpen(false)}
-                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                    >
-                        Cancel
-                    </Button>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handlePlaylistClose(playlistLink)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5, '&:hover': { boxShadow: 0 } }}
+                            disabled={!!playlistLink && !playlistLink.includes('spotify.com/playlist')}
+                        >
+                            Create
+                        </Button>
+                        <Button
+                            onClick={() => setPlaylistOpen(false)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5 }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Box>
             </Dialog>
             <Dialog open={songOpen} onClose={() => handleSongClose(songLink)}>
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        flexDirection: 'column',
                         p: 5,
                         alignItems: 'center',
-                        fontFamily: 'Spotify Mix, Arial, sans-serif'
+                        fontFamily: 'Spotify Mix, Arial, sans-serif',
+                        gap: 2,
                     }}
                 >
                     <TextField
@@ -167,21 +174,23 @@ function Start() {
                         error={!!songLink && !songLink.includes('spotify.com/track')}
                         helperText={!!songLink && !songLink.includes('spotify.com/track') ? 'Please enter a valid Spotify Song URL' : ''}
                     />
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => handleSongClose(songLink)}
-                        sx={{ margin: 2, fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                        disabled={!!songLink && !songLink.includes('spotify.com/track')}
-                    >
-                        Create
-                    </Button>
-                    <Button
-                        onClick={() => setSongOpen(false)}
-                        sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif' }}
-                    >
-                        Cancel
-                    </Button>
+                    <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleSongClose(songLink)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5, '&:hover': { boxShadow: 0 } }}
+                            disabled={!!songLink && !songLink.includes('spotify.com/track')}
+                        >
+                            Create
+                        </Button>
+                        <Button
+                            onClick={() => setSongOpen(false)}
+                            sx={{ fontFamily: 'Spotify Mix, Arial, sans-serif', boxShadow: 0, borderRadius: 5 }}
+                        >
+                            Cancel
+                        </Button>
+                    </Box>
                 </Box>
             </Dialog>
             <Container
@@ -207,7 +216,7 @@ function Start() {
                             color: 'white',
                         }}
                     >
-                        Create a Free Custom Music Poster
+                        Postify - Free Custom Music Posters
                     </Box>
                     <CallsLeft />
                     <Box
@@ -235,7 +244,7 @@ function Start() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            bgcolor: 'rgba(40,40,40,0.7)',
+                            bgcolor: 'rgba(30, 30, 30, 0.7)',
                             borderRadius: 2,
                             p: 3,
                         }}
@@ -250,9 +259,9 @@ function Start() {
                                 textTransform: 'none',
                                 boxShadow: 0,
                                 borderRadius: 8,
-                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                backgroundColor: 'rgba(40, 40, 40, 0.7)',
                                 color: 'white',
-                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                                '&:hover': { backgroundColor: 'rgba(45, 45, 45, 0.7)', boxShadow: 0 }
                             }}
                             onClick={handleAlbumOpen}
                         >
@@ -270,7 +279,7 @@ function Start() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            bgcolor: 'rgba(40,40,40,0.7)',
+                            bgcolor: 'rgba(30, 30, 30, 0.7)',
                             borderRadius: 2,
                             p: 3,
                         }}
@@ -285,9 +294,9 @@ function Start() {
                                 textTransform: 'none',
                                 boxShadow: 0,
                                 borderRadius: 8,
-                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                backgroundColor: 'rgba(40, 40, 40, 0.7)',
                                 color: 'white',
-                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                                '&:hover': { backgroundColor: 'rgba(45, 45, 45, 0.7)', boxShadow: 0 }
                             }}
                             onClick={handlePlaylistOpen}
                         >
@@ -305,7 +314,7 @@ function Start() {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            bgcolor: 'rgba(40,40,40,0.7)',
+                            bgcolor: 'rgba(30, 30, 30, 0.7)',
                             borderRadius: 2,
                             p: 3,
                         }}
@@ -320,9 +329,9 @@ function Start() {
                                 textTransform: 'none',
                                 boxShadow: 0,
                                 borderRadius: 8,
-                                backgroundColor: 'rgba(50, 50, 50, 0.7)',
+                                backgroundColor: 'rgba(40, 40, 40, 0.7)',
                                 color: 'white',
-                                '&:hover': { backgroundColor: 'rgba(65, 65, 65, 0.7)' }
+                                '&:hover': { backgroundColor: 'rgba(45, 45, 45, 0.7)', boxShadow: 0 }
                             }}
                             onClick={handleSongOpen}
                         >

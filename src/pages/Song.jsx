@@ -629,7 +629,7 @@ function isColorLight(hex) {
     return luminance;
 }
 
-function getContrastingColor(hex, amount = 150) {
+function getContrastingColor(hex, amount = 170) {
     hex = hex.replace('#', '');
     let num = parseInt(hex, 16);
     let r = (num >> 16) & 0xFF;
